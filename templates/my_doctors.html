@@ -1,0 +1,218 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+My Doctors - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-header">
+
+    <h1>
+        My Doctors
+    </h1>
+
+    <p>
+        Doctors you've previously booked appointments with.
+    </p>
+
+</div>
+
+
+<!-- Search -->
+
+<div class="doctor-search-container">
+
+    <form
+        method="GET"
+        action="{{ url_for('my_doctors') }}"
+    >
+
+        <div class="doctor-search-box">
+
+            <span>
+                🔍
+            </span>
+
+            <input
+                type="text"
+                name="q"
+                value="{{ search }}"
+                placeholder="Search doctor name or specialization..."
+            >
+
+            <button type="submit">
+                Search
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- Doctor List -->
+
+<div class="my-doctors-list">
+
+
+    {% for doctor in doctors %}
+
+
+    <div class="my-doctor-card">
+
+
+        <!-- Doctor Avatar -->
+
+        <div class="my-doctor-avatar">
+
+            👨‍⚕️
+
+        </div>
+
+
+        <!-- Doctor Information -->
+
+        <div class="my-doctor-info">
+
+            <h2>
+                {{ doctor.name }}
+            </h2>
+
+            <p class="doctor-specialization">
+                {{ doctor.specialization }}
+            </p>
+
+            <p>
+                {{ doctor.experience }}+ Years Experience
+            </p>
+
+            <p>
+                {{ doctor.hospital.name }}
+            </p>
+
+            <p class="doctor-rating">
+                ⭐ {{ doctor.rating }}
+                ({{ doctor.review_count }} reviews)
+            </p>
+            <span class="previously-booked">
+            ✓ Previously booked
+            </span>
+
+        </div>
+
+
+        <!-- Fee -->
+
+        <div class="my-doctor-fee">
+
+            <span>
+                Consultation Fee
+            </span>
+
+            <strong>
+                ₹{{ doctor.consultation_fee }}
+            </strong>
+
+        </div>
+
+
+        <!-- Actions -->
+
+        <div class="my-doctor-actions">
+
+            <a
+                href="{{ url_for(
+                    'doctor_details',
+                    doctor_id=doctor.id
+                ) }}"
+                class="secondary-button"
+            >
+                View Profile
+            </a>
+
+
+            <a
+                href="{{ url_for(
+                    'book_appointment',
+                    doctor_id=doctor.id
+                ) }}"
+                class="primary-button"
+            >
+                Book Appointment
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+    {% else %}
+
+
+    <!-- Empty State -->
+
+    <div class="no-doctors">
+
+        <div class="no-doctors-icon">
+            👨‍⚕️
+        </div>
+
+        <h2>
+            {% if search %}
+
+                No doctors found
+
+            {% else %}
+
+                No doctors yet
+
+            {% endif %}
+        </h2>
+
+
+        <p>
+
+            {% if search %}
+
+                Try searching for another doctor
+                name or specialization.
+
+            {% else %}
+
+                Doctors you've previously booked
+                will appear here.
+
+            {% endif %}
+
+        </p>
+
+
+        {% if not search %}
+
+        <a
+            href="/hospitals"
+            class="primary-button"
+        >
+            Find a Doctor
+        </a>
+
+        {% endif %}
+
+    </div>
+
+
+    {% endfor %}
+
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Medical Report Summary - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<a
+    href="{{ url_for('medical_records') }}"
+    class="back-link"
+>
+    ← Back to Medical Records
+</a>
+
+
+<div class="report-summary-page">
+
+
+    <!-- Report Header -->
+
+    <div class="report-summary-header">
+
+        <div class="report-file-icon">
+            📄
+        </div>
+
+        <div class="report-file-info">
+
+            <h1>
+                {{ record.filename }}
+            </h1>
+
+            <p>
+                Uploaded on
+                {{ record.uploaded_at.strftime("%d %b %Y") }}
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for(
+                'download_medical_record',
+                record_id=record.id
+            ) }}"
+            class="secondary-button"
+        >
+            Download Original
+        </a>
+
+    </div>
+
+
+    <!-- AI Notice -->
+
+    <div class="ai-notice">
+
+        <span class="ai-notice-icon">
+            ✨
+        </span>
+
+        <div>
+
+            <strong>
+                AI Medical Report Summary
+            </strong>
+
+            <p>
+                This summary is generated from the
+                uploaded document and is intended
+                for informational purposes only.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Summary -->
+
+    <div class="report-summary-card">
+
+        <h2>
+            Report Summary
+        </h2>
+
+        <div class="summary-placeholder">
+
+            <div class="summary-placeholder-icon">
+                🧠
+            </div>
+
+            <h3>
+                AI Analysis Coming Next
+            </h3>
+
+            <p>
+                The uploaded report will be analyzed
+                and important information will appear
+                here.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Important Information -->
+
+    <div class="report-summary-card">
+
+        <h2>
+            Important Information
+        </h2>
+
+        <div class="medical-disclaimer">
+
+            <strong>
+                Important
+            </strong>
+
+            <p>
+                This AI-generated summary is not a
+                medical diagnosis and should not replace
+                advice from a qualified healthcare
+                professional.
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

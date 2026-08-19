@@ -1,0 +1,68 @@
+{% extends "doctor/base.html" %}
+{% block title %}Doctor Login | HealthForge AI{% endblock %}
+
+{% block auth_content %}
+<div class="login-page">
+    <div class="login-visual">
+        <div class="login-brand">
+            <div class="brand-mark large">❤</div>
+            <strong>HealthForge <span>AI</span></strong>
+        </div>
+        <div class="visual-copy">
+            <h1>Smarter Healthcare,<br>Better Tomorrow</h1>
+        </div>
+        <div class="doctor-photo-wrap">
+            <div class="doctor-photo-glow"></div>
+            <img
+                class="doctor-photo"
+                src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=900&q=85"
+                alt="Professional doctor in a hospital setting"
+            >
+            <div class="photo-badge"><span class="photo-badge-dot"></span> Healthcare Professional</div>
+        </div>
+    </div>
+
+    <div class="login-panel">
+        <div class="login-card">
+            <div class="login-card-heading">
+                <span class="stethoscope"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3v5a6 6 0 0 0 12 0V3M6 3H4M18 3h2M12 14v2a4 4 0 0 0 8 0v-1"/><circle cx="20" cy="14" r="1.4"/></svg></span>
+                <h2>Doctor Login</h2>
+            </div>
+            <p class="muted">Welcome back! Please login to your account</p>
+
+            <form method="POST" action="{{ url_for('role_login', role='doctor') }}" class="login-form">
+                <label for="email">Email or Phone</label>
+                <input id="email" name="email" type="text" placeholder="Enter email or phone" autocomplete="username" required>
+
+                <div class="label-row">
+                    <label for="password">Password</label>
+                </div>
+                <div class="password-field">
+                    <input id="password" name="password" type="password" placeholder="Enter your password" autocomplete="current-password" required>
+                    <button type="button" class="password-toggle" id="passwordToggle">◉</button>
+                </div>
+
+                <div class="login-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="remember">
+                        <span>Remember me</span>
+                    </label>
+                    <a href="#" onclick="return false;">Forgot Password?</a>
+                </div>
+
+                <button class="primary-button full-width" type="submit">Login</button>
+            </form>
+
+            <p class="login-footer">Don't have an account? <a href="#" onclick="return false;">Contact Admin</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+document.getElementById("passwordToggle")?.addEventListener("click", function () {
+    const input = document.getElementById("password");
+    input.type = input.type === "password" ? "text" : "password";
+});
+</script>
+{% endblock %}

@@ -1,0 +1,203 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+My Profile - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-header">
+
+    <h1>
+        My Profile
+    </h1>
+
+    <p>
+        View and manage your personal information.
+    </p>
+
+</div>
+
+
+<div class="profile-page">
+
+
+    <!-- Profile Header -->
+
+    <div class="profile-header-card">
+
+        <div class="profile-avatar">
+            👤
+        </div>
+
+
+        <div class="profile-header-info">
+
+            <h2>
+                {{ patient.name }}
+            </h2>
+
+            <p>
+                {{ patient.email }}
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ url_for('edit_profile') }}"
+            class="primary-button"
+        >
+            Edit Profile
+        </a>
+
+    </div>
+
+
+
+    <!-- Personal Information -->
+
+    <div class="profile-card">
+
+        <h2>
+            Personal Information
+        </h2>
+
+
+        <div class="profile-info-grid">
+
+
+            <div class="profile-info-item">
+
+                <span>
+                    Full Name
+                </span>
+
+                <strong>
+                    {{ patient.name }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-info-item">
+
+                <span>
+                    Email
+                </span>
+
+                <strong>
+                    {{ patient.email }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-info-item">
+
+                <span>
+                    Phone
+                </span>
+
+                <strong>
+                    {{ patient.phone }}
+                </strong>
+
+            </div>
+
+
+            <div class="profile-info-item">
+
+                <span>
+                    Date of Birth
+                </span>
+
+                <strong>
+
+                    {% if patient.date_of_birth %}
+
+                        {{ patient.date_of_birth.strftime("%d %b %Y") }}
+
+                    {% else %}
+
+                        Not provided
+
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+            <div class="profile-info-item profile-address">
+
+                <span>
+                    Address
+                </span>
+
+                <strong>
+
+                    {% if patient.address %}
+
+                        {{ patient.address }}
+
+                    {% else %}
+
+                        Not provided
+
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Account Information -->
+
+    <div class="profile-card">
+
+        <h2>
+            Account
+        </h2>
+
+
+        <div class="profile-account-row">
+
+            <div>
+
+                <strong>
+                    Account Email
+                </strong>
+
+                <p>
+                    {{ patient.email }}
+                </p>
+
+            </div>
+
+
+            <span class="account-status">
+                Active
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HealthForge AI - Login</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/role.css') }}">
+</head>
+<body>
+<div class="role-page">
+  <div class="role-card">
+    <div class="brand">♥ <span>HealthForge</span> <b>AI</b></div>
+    <p class="eyebrow">Healthcare Management System</p>
+    <h1>Welcome to HealthForge</h1>
+    <p class="subtitle">Choose how you want to continue.</p>
+
+    <div class="role-grid">
+      <a class="role-option patient" href="{{ url_for('role_login', role='patient') }}">
+        <div class="role-icon">👤</div>
+        <div><h2>Patient</h2><p>Appointments, doctors and medical records</p></div>
+        <span>→</span>
+      </a>
+      <a class="role-option doctor" href="{{ url_for('role_login', role='doctor') }}">
+        <div class="role-icon">🩺</div>
+        <div><h2>Doctor</h2><p>Appointments, patients and schedule</p></div>
+        <span>→</span>
+      </a>
+      <a class="role-option receptionist" href="{{ url_for('role_login', role='receptionist') }}">
+        <div class="role-icon">🏥</div>
+        <div><h2>Receptionist</h2><p>Patient registration and front desk</p></div>
+        <span>→</span>
+      </a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

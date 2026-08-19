@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Book Appointment - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+
+
+<a
+    href="{{ url_for('doctor_profile', doctor_id=doctor.id) }}"
+    class="back-link"
+>
+    ← Back
+</a>
+
+
+<div class="booking-page">
+
+    <!-- Doctor Information -->
+
+    <div class="booking-doctor-card">
+
+        <div class="doctor-profile-image">
+            👨‍⚕️
+        </div>
+
+
+        <div>
+
+            <h1>
+                {{ doctor.name }}
+            </h1>
+
+            <p class="doctor-specialization">
+                {{ doctor.specialization }}
+            </p>
+
+            <p>
+                {{ doctor.hospital.name }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Booking Form -->
+
+    <div class="booking-card">
+
+        <h2>
+            Book Appointment
+        </h2>
+        {% if error %}
+
+        <div class="booking-error">
+
+            {{ error }}
+
+        </div>
+
+        {% endif %}
+
+
+        <form
+            method="POST"
+        >
+
+            <!-- Date -->
+
+            <div class="booking-form-group">
+
+                <label for="appointment_date">
+                    Select Date
+                </label>
+
+                <input
+                    type="date"
+                    id="appointment_date"
+                    name="appointment_date"
+                    min="{{ today }}"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Time -->
+
+            <div class="booking-form-group">
+
+                <label for="appointment_time">
+                    Select Time Slot
+                </label>
+
+                <select
+                    id="appointment_time"
+                    name="appointment_time"
+                    required
+                >
+
+                    <option value="">
+                        Select a time
+                    </option>
+
+                    {% for slot in time_slots %}
+
+                    <option value="{{ slot }}">
+                        {{ slot }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+            </div>
+
+
+            <!-- Consultation Type -->
+
+            <div class="booking-form-group">
+
+                <label for="consultation_type">
+                    Consultation Type
+                </label>
+
+                <select
+                    id="consultation_type"
+                    name="consultation_type"
+                    required
+                >
+
+                    <option value="In-Person">
+                        In-Person
+                    </option>
+
+                    <option value="Online">
+                        Online
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="confirm-booking-button"
+            >
+                Confirm Booking
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

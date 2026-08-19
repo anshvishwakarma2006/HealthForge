@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+HealthForge AI - Dashboard
+
+{% endblock %}
+
+
+
+{% block content %}
+
+
+<!-- =========================
+     Dashboard Header
+     ========================= -->
+
+<div class="dashboard-header">
+
+    <div>
+
+        <h1>
+            Welcome, {{ patient.name }} 👋
+        </h1>
+
+        <p>
+            Here's your health overview.
+        </p>
+
+    </div>
+
+</div>
+
+
+
+<!-- =========================
+     Statistics
+     ========================= -->
+
+<div class="stats-grid">
+
+
+    <!-- Upcoming Appointments -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📅
+        </div>
+
+        <div>
+
+            <p>
+                Upcoming Appointments
+            </p>
+
+            <h2>
+                {{ upcoming_count }}
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Medical Records -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📄
+        </div>
+
+        <div>
+
+            <p>
+                Medical Records
+            </p>
+
+            <h2>
+                0
+            </h2>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Notifications -->
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            🔔
+        </div>
+
+        <div>
+
+            <p>
+                Notifications
+            </p>
+
+            <h2>
+                0
+            </h2>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================
+     Dashboard Content
+     ========================= -->
+
+<div class="dashboard-grid">
+
+
+    <!-- =========================
+         Upcoming Appointment
+         ========================= -->
+
+    <section class="dashboard-card">
+
+
+        <div class="card-header">
+
+            <h2>
+                Upcoming Appointment
+            </h2>
+
+        </div>
+
+
+
+        {% if next_appointment %}
+
+
+        <!-- Appointment exists -->
+
+        <div class="next-appointment-card">
+
+
+            <div class="next-appointment-content">
+
+
+                <div class="next-appointment-info">
+
+                    <h3>
+                        Next Appointment
+                    </h3>
+
+                    <h2>
+                        {{ next_appointment.doctor.name }}
+                    </h2>
+
+                    <p>
+                        {{ next_appointment.doctor.specialization }}
+                    </p>
+
+                    <p>
+                        {{ next_appointment.hospital.name }}
+                    </p>
+
+                </div>
+
+
+
+                <div class="next-appointment-date">
+
+                    <strong>
+                        {{ next_appointment.appointment_date.strftime("%d %b") }}
+                    </strong>
+
+                    <span>
+                        {{ next_appointment.appointment_time }}
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+            <a
+                href="{{ url_for('my_appointments') }}"
+                class="primary-button"
+            >
+                View Appointment
+            </a>
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- No appointment -->
+
+        <div class="empty-state">
+
+
+            <div class="empty-icon">
+                📅
+            </div>
+
+
+            <h3>
+                No upcoming appointments
+            </h3>
+
+
+            <p>
+                You don't have any appointments scheduled.
+            </p>
+
+
+            <a
+                href="/hospitals"
+                class="primary-button"
+            >
+                Book Now
+            </a>
+
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+
+    <!-- =========================
+         Quick Actions
+         ========================= -->
+
+    <section class="dashboard-card">
+
+
+        <div class="card-header">
+
+            <h2>
+                Quick Actions
+            </h2>
+
+        </div>
+
+
+
+        <div class="quick-actions">
+
+
+            <a href="/hospitals">
+
+                <span>
+                    🏥
+                </span>
+
+                Search Hospital
+
+            </a>
+
+
+
+            <a href="/doctors">
+
+                <span>
+                    👨‍⚕️
+                </span>
+
+                Find Doctor
+
+            </a>
+
+
+
+            <a href="/appointments">
+
+                <span>
+                    📅
+                </span>
+
+                Book Appointment
+
+            </a>
+
+
+
+            <a href="#">
+
+                <span>
+                    📄
+                </span>
+
+                Upload Record
+
+            </a>
+
+
+        </div>
+
+
+    </section>
+
+
+</div>
+
+
+{% endblock %}

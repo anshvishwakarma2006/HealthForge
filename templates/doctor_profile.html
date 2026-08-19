@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+{{ doctor.name }} - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+<a
+    href="{{ url_for('doctor_list', hospital_id=doctor.hospital_id) }}"
+    class="back-link"
+>
+    ← Back to Doctors
+</a>
+
+
+<div class="doctor-profile">
+
+
+    <!-- Doctor Header -->
+
+    <div class="doctor-profile-header">
+
+        <div class="doctor-profile-image">
+
+            👨‍⚕️
+
+        </div>
+
+
+        <div class="doctor-profile-info">
+
+            <h1>
+                {{ doctor.name }}
+            </h1>
+
+            <p class="doctor-specialization">
+                {{ doctor.specialization }}
+            </p>
+
+            <p>
+                {{ doctor.experience }}+ Years Experience
+            </p>
+
+            <p class="doctor-rating">
+                ⭐ {{ doctor.rating }}
+                ({{ doctor.review_count }} Reviews)
+            </p>
+
+        </div>
+
+
+        <div class="doctor-profile-action">
+
+            <a
+                href="{{ url_for('book_appointment', doctor_id=doctor.id) }}"
+                class="primary-button"
+            >
+                Book Appointment
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Doctor Details -->
+
+    <div class="doctor-details-grid">
+
+
+        <!-- About Doctor -->
+
+        <div class="doctor-details-card">
+
+            <h2>
+                About Doctor
+            </h2>
+
+            <p>
+                {{ doctor.name }} is an experienced
+                {{ doctor.specialization }}
+                with {{ doctor.experience }} years
+                of experience in providing quality
+                healthcare services.
+            </p>
+
+        </div>
+
+
+        <!-- Qualifications -->
+
+        <div class="doctor-details-card">
+
+            <h2>
+                Qualification
+            </h2>
+
+            <p>
+                {{ doctor.qualification }}
+            </p>
+
+        </div>
+
+
+        <!-- Specialization -->
+
+        <div class="doctor-details-card">
+
+            <h2>
+                Specialization
+            </h2>
+
+            <p>
+                {{ doctor.specialization }}
+            </p>
+
+        </div>
+
+
+        <!-- Consultation Fee -->
+
+        <div class="doctor-details-card">
+
+            <h2>
+                Consultation Fee
+            </h2>
+
+            <p class="fee">
+                ₹{{ doctor.consultation_fee }}
+            </p>
+
+        </div>
+
+
+        <!-- Available Days -->
+
+        <div class="doctor-details-card">
+
+            <h2>
+                Available Days
+            </h2>
+
+            <p>
+                {{ doctor.available_days }}
+            </p>
+
+        </div>
+
+
+        <!-- Timings -->
+
+        <div class="doctor-details-card">
+
+            <h2>
+                Timings
+            </h2>
+
+            <p>
+                {{ doctor.timings }}
+            </p>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+{% endblock %}

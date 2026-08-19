@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HealthForge AI - Doctor{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/doctor.css') }}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+        <div class="brand">
+            <div class="brand-mark">❤</div>
+            <div><strong>HealthForge <span>AI</span></strong></div>
+        </div>
+        <nav class="nav">
+            <a class="nav-item {% if request.endpoint == 'doctor_dashboard' %}active{% endif %}" href="{{ url_for('doctor_dashboard') }}">
+                <span class="nav-icon">⌂</span><span>Dashboard</span>
+            </a>
+            <a class="nav-item {% if request.endpoint == 'doctor_appointment_list' %}active{% endif %}" href="{{ url_for('doctor_appointment_list') }}">
+                <span class="nav-icon">▣</span><span>Appointments</span>
+            </a>
+            <a class="nav-item {% if request.endpoint == 'doctor_patient_list' %}active{% endif %}" href="{{ url_for('doctor_patient_list') }}">
+                <span class="nav-icon">♙</span><span>My Patients</span>
+            </a>
+            <a class="nav-item {% if request.endpoint == 'doctor_schedule_page' %}active{% endif %}" href="{{ url_for('doctor_schedule_page') }}">
+                <span class="nav-icon">◷</span><span>Schedule</span>
+            </a>
+            <a class="nav-item {% if request.endpoint == 'doctor_notification_page' %}active{% endif %}" href="{{ url_for('doctor_notification_page') }}">
+                <span class="nav-icon">🔔</span><span>Notifications</span>
+                {% if unread_notifications %}<span class="nav-badge">{{ unread_notifications }}</span>{% endif %}
+            </a>
+            <a class="nav-item {% if request.endpoint == 'doctor_portal_profile' %}active{% endif %}" href="{{ url_for('doctor_portal_profile') }}">
+                <span class="nav-icon">👤</span><span>Profile</span>
+            </a>
+        </nav>
+        <a class="nav-item logout" href="{{ url_for('doctor_logout') }}">
+            <span class="nav-icon">↪</span><span>Logout</span>
+        </a>
+    </aside>
+    <main class="main-content">
+        <header class="topbar">
+            <button class="mobile-menu" id="mobileMenu" type="button">☰</button>
+            <div class="breadcrumb">
+                <span>HealthForge AI</span><span class="crumb-separator">/</span>
+                <strong>{% block breadcrumb %}Doctor{% endblock %}</strong>
+            </div>
+            <div class="topbar-right">
+                <a href="{{ url_for('doctor_notification_page') }}" class="notification-button" aria-label="Notifications">
+                    🔔{% if unread_notifications %}<span>{{ unread_notifications }}</span>{% endif %}
+                </a>
+                <div class="top-doctor">
+                    <div class="avatar avatar-top">{{ doctor.photo_initials }}</div>
+                    <div class="top-doctor-info"><strong>{{ doctor.name }}</strong><small>{{ doctor.specialization }}</small></div>
+                </div>
+            </div>
+        </header>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-wrap">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}"><span>{{ message }}</span><button type="button" class="flash-close">×</button></div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        {% endwith %}
+        <section class="page-content">{% block content %}{% endblock %}</section>
+    </main>
+</div>
+<script src="{{ url_for('static', filename='js/doctor.js') }}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Upload Medical Record - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        Upload Medical Record
+    </h1>
+
+    <p>
+        Upload your medical reports and documents securely.
+    </p>
+
+</div>
+
+
+<div class="upload-record-card">
+
+
+    {% if error %}
+
+    <div class="upload-error">
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+        action="{{ url_for('upload_medical_record') }}"
+    >
+
+
+        <div class="upload-box">
+
+            <div class="upload-icon">
+                📄
+            </div>
+
+
+            <h2>
+                Select a medical document
+            </h2>
+
+
+            <p>
+                PDF, JPG, JPEG or PNG
+            </p>
+
+
+            <p>
+                Maximum size: 10 MB
+            </p>
+
+
+            <input
+                type="file"
+                name="file"
+                accept=".pdf,.jpg,.jpeg,.png"
+                required
+            >
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="primary-button"
+        >
+            Upload Document
+        </button>
+
+
+    </form>
+
+
+</div>
+
+{% endblock %}

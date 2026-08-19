@@ -1,0 +1,110 @@
+{% extends "doctor/base.html" %}
+{% block title %}My Patients | HealthForge AI{% endblock %}
+{% block breadcrumb %}My Patients{% endblock %}
+
+{% block content %}
+<div class="page-header compact">
+    <div>
+        <p class="eyebrow">Patients</p>
+        <h1>My Patients</h1>
+    </div>
+    <div class="count-chip">{{ patients|length }} Patients</div>
+</div>
+
+<section class="panel table-panel">
+    <div class="patient-toolbar">
+        <form method="GET" class="search-form">
+            <div class="search-box">
+                <span>⌕</span>
+                <input name="q" value="{{ query }}" placeholder="Search by patient name or MRN..." aria-label="Search patients">
+            </div>
+            <select name="gender" onchange="this.form.submit()">
+                <option value="All" {% if gender == "All" %}selected{% endif %}>All Patients</option>
+                <option value="Male" {% if gender == "Male" %}selected{% endif %}>Male</option>
+                <option value="Female" {% if gender == "Female" %}selected{% endif %}>Female</option>
+            </select>
+            <button class="secondary-button" type="submit">Search</button>
+        </form>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Patient Name</th>
+                    <th>MRN</th>
+                    <th>Age / Gender</th>
+                    <th>Last Visit</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for patient in patients %}
+                <tr>
+                    <td><div class="patient-cell"><span class="table-avatar">{{ patient.name[0] }}</span><strong>{{ patient.name }}</strong></div></td>
+                    <td><code>{{ patient.mrn }}</code></td>
+                    <td>{{ patient.age }} / {{ patient.gender }}</td>
+                    <td>{{ patient.last_visit }}</td>
+                    <td><button class="link-button" onclick="showPatient('{{ patient.name }}', '{{ patient.mrn }}', '{{ patient.age }}', '{{ patient.gender }}', '{{ patient.last_visit }}')">View</button></td>
+                </tr>
+            {% else %}
+                <tr><td colspan="5" class="empty-state">No patients match your search.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {% if total_pages > 1 %}
+    <div class="pagination" aria-label="Patient pagination">
+        {% if page > 1 %}
+        <a class="pagination-button" href="{{ url_for('doctor_patient_list', page=page-1, q=query, gender=gender) }}" aria-label="Previous page">‹</a>
+        {% else %}
+        <span class="pagination-button disabled">‹</span>
+        {% endif %}
+
+        {% for page_number in range(1, total_pages + 1) %}
+        <a class="pagination-button {% if page_number == page %}current{% endif %}" href="{{ url_for('doctor_patient_list', page=page_number, q=query, gender=gender) }}">{{ page_number }}</a>
+        {% endfor %}
+
+        {% if page < total_pages %}
+        <a class="pagination-button" href="{{ url_for('doctor_patient_list', page=page+1, q=query, gender=gender) }}" aria-label="Next page">›</a>
+        {% else %}
+        <span class="pagination-button disabled">›</span>
+        {% endif %}
+    </div>
+    {% endif %}
+</section>
+
+<div class="modal-backdrop" id="patientModal">
+    <div class="modal">
+        <button class="modal-close" onclick="closePatient()">×</button>
+        <div class="modal-avatar" id="modalAvatar">P</div>
+        <h2 id="modalName">Patient</h2>
+        <div class="modal-details">
+            <div><span>MRN</span><strong id="modalMrn">-</strong></div>
+            <div><span>Age</span><strong id="modalAge">-</strong></div>
+            <div><span>Gender</span><strong id="modalGender">-</strong></div>
+            <div><span>Last Visit</span><strong id="modalVisit">-</strong></div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function showPatient(name, mrn, age, gender, visit) {
+    document.getElementById("modalAvatar").textContent = name.charAt(0);
+    document.getElementById("modalName").textContent = name;
+    document.getElementById("modalMrn").textContent = mrn;
+    document.getElementById("modalAge").textContent = age;
+    document.getElementById("modalGender").textContent = gender;
+    document.getElementById("modalVisit").textContent = visit;
+    document.getElementById("patientModal").classList.add("show");
+}
+function closePatient() {
+    document.getElementById("patientModal").classList.remove("show");
+}
+document.getElementById("patientModal")?.addEventListener("click", function(e) {
+    if (e.target === this) closePatient();
+});
+</script>
+{% endblock %}

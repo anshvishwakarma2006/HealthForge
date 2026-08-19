@@ -1,0 +1,66 @@
+{% extends "doctor/base.html" %}
+{% block title %}Schedule | HealthForge AI{% endblock %}
+{% block breadcrumb %}Schedule{% endblock %}
+
+{% block content %}
+<div class="page-header compact">
+    <div>
+        <p class="eyebrow">Availability</p>
+        <h1>My Schedule</h1>
+        <p>Set the time slots when patients can book appointments.</p>
+    </div>
+</div>
+
+<section class="panel schedule-panel">
+    <div class="panel-header">
+        <div>
+            <h2>Set Your Availability</h2>
+            <p>Choose a date and configure your available time slots.</p>
+        </div>
+    </div>
+
+    <form method="GET" class="date-form">
+        <label for="date">Select Date</label>
+        <input id="date" name="date" type="text" value="{{ selected_date }}" placeholder="15 May 2025">
+        <button class="secondary-button" type="submit">Load</button>
+    </form>
+
+    <div class="slots-heading">
+        <h3>Time Slots</h3>
+        <span>{{ slots|selectattr("enabled")|list|length }} active</span>
+    </div>
+
+    <div class="slot-list">
+        {% for slot in slots %}
+        <div class="slot-row">
+            <div class="slot-time"><span class="clock-icon">◷</span>{{ slot.time }}</div>
+            <form method="POST">
+                <input type="hidden" name="action" value="toggle">
+                <input type="hidden" name="index" value="{{ loop.index0 }}">
+                <input type="hidden" name="date" value="{{ selected_date }}">
+                <button type="submit" class="switch {% if slot.enabled %}on{% endif %}" aria-label="Toggle availability">
+                    <span></span>
+                </button>
+            </form>
+        </div>
+        {% else %}
+        <div class="empty-state">No time slots configured for this date.</div>
+        {% endfor %}
+    </div>
+
+    <form method="POST" class="add-slot-form">
+        <input type="hidden" name="action" value="add">
+        <input type="hidden" name="date" value="{{ selected_date }}">
+        <input type="text" name="start" placeholder="Start e.g. 09:00 AM" required>
+        <span>to</span>
+        <input type="text" name="end" placeholder="End e.g. 01:00 PM" required>
+        <button class="outline-button" type="submit">＋ Add Time Slot</button>
+    </form>
+
+    <form method="POST" class="save-schedule-form">
+        <input type="hidden" name="action" value="save">
+        <input type="hidden" name="date" value="{{ selected_date }}">
+        <button class="primary-button" type="submit">Save Schedule</button>
+    </form>
+</section>
+{% endblock %}

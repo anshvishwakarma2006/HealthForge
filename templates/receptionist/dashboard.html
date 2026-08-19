@@ -1,0 +1,21 @@
+{% extends "receptionist/base.html" %}
+{% block title %}Receptionist Dashboard | HealthForge AI{% endblock %}
+{% block content %}
+<header class="rec-header"><div><p class="eyebrow">Front Desk</p><h1>Receptionist Dashboard 👋</h1><p>Manage patients, appointments and hospital operations.</p></div><div class="date">Today</div></header>
+<div class="rec-stats">
+<div><span>Registered Patients</span><strong>{{ patient_count }}</strong></div>
+<div><span>Doctors</span><strong>{{ doctor_count }}</strong></div>
+<div><span>Hospitals</span><strong>{{ hospital_count }}</strong></div>
+<div><span>Today's Appointments</span><strong>{{ appointments|length }}</strong></div>
+</div>
+<div class="rec-grid">
+<section class="panel"><div class="panel-head"><h2>Today's Appointments</h2><a href="{{ url_for('receptionist_appointments_page') }}">View all →</a></div>
+<table><thead><tr><th>Time</th><th>Patient</th><th>Doctor</th><th>Status</th></tr></thead><tbody>
+{% for a in appointments %}<tr><td>{{ a.time }}</td><td>{{ a.patient }}</td><td>{{ a.doctor }}</td><td><span class="pill">{{ a.status }}</span></td></tr>{% endfor %}
+</tbody></table></section>
+<section class="panel quick"><h2>Quick Actions</h2>
+<a href="{{ url_for('register') }}">➕ Register Patient</a>
+<a href="{{ url_for('receptionist_patients') }}">👥 Search Patients</a>
+<a href="{{ url_for('receptionist_appointments_page') }}">📅 Manage Appointments</a>
+</section></div>
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ role|title }} Login | HealthForge AI</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/role.css') }}">
+</head>
+<body>
+<div class="role-page">
+  <div class="login-card">
+    <a class="back-link" href="{{ url_for('index') }}">← Choose another role</a>
+    <div class="brand">♥ <span>HealthForge</span> <b>AI</b></div>
+    <p class="eyebrow">{{ role|title }} Portal</p>
+    <h1>{{ role|title }} Login</h1>
+    <p class="subtitle">Enter your credentials to continue.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% for category, message in messages %}
+        <div class="flash {{ category }}">{{ message }}</div>
+      {% endfor %}
+    {% endwith %}
+
+    <form method="POST" class="role-form">
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" placeholder="Enter email" required>
+
+      <label for="password">Password</label>
+      <input id="password" name="password" type="password" placeholder="Enter password" required>
+
+      <button type="submit">Login as {{ role|title }} →</button>
+    </form>
+
+    {% if role == 'patient' %}
+      <p class="register-note">New patient? <a href="{{ url_for('register') }}">Create an account</a></p>
+    {% elif role == 'doctor' %}
+      <div class="demo-box"><strong>Doctor demo</strong><br>doctor@healthforge.ai<br>doctor123</div>
+    {% elif role == 'receptionist' %}
+      <div class="demo-box"><strong>Receptionist demo</strong><br>receptionist@healthforge.ai<br>reception123</div>
+    {% endif %}
+  </div>
+</div>
+</body>
+</html>

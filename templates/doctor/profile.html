@@ -1,0 +1,58 @@
+{% extends "doctor/base.html" %}
+{% block title %}Profile | HealthForge AI{% endblock %}
+{% block breadcrumb %}Profile{% endblock %}
+
+{% block content %}
+<div class="page-header compact">
+    <div>
+        <p class="eyebrow">Account</p>
+        <h1>Profile</h1>
+    </div>
+</div>
+
+<section class="panel profile-panel">
+    <div class="profile-tabs">
+        <button class="active" type="button">Personal Info</button>
+        <button type="button" onclick="alert('Password change can be connected to authentication later.')">Change Password</button>
+    </div>
+
+    <div class="profile-layout">
+        <div class="profile-photo-column">
+            <div class="profile-avatar">{{ doctor.photo_initials }}</div>
+            <button type="button" class="outline-button" onclick="alert('Photo upload can be connected later.')">Change Photo</button>
+        </div>
+
+        <form method="POST" class="profile-form">
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="name">Full Name</label>
+                    <input id="name" name="name" value="{{ doctor.name }}" required>
+                </div>
+                <div class="form-field">
+                    <label for="email">Email</label>
+                    <input id="email" name="email" type="email" value="{{ doctor.email }}" required>
+                </div>
+                <div class="form-field">
+                    <label for="phone">Phone</label>
+                    <input id="phone" name="phone" value="{{ doctor.phone }}">
+                </div>
+                <div class="form-field">
+                    <label for="specialization">Specialization</label>
+                    <input id="specialization" name="specialization" value="{{ doctor.specialization }}">
+                </div>
+                <div class="form-field">
+                    <label for="qualification">Qualification</label>
+                    <input id="qualification" name="qualification" value="{{ doctor.qualification }}">
+                </div>
+                <div class="form-field">
+                    <label for="experience">Experience</label>
+                    <input id="experience" name="experience" value="{{ doctor.experience }}">
+                </div>
+            </div>
+            <div class="form-actions">
+                <button class="primary-button" type="submit">Update Profile</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

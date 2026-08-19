@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Doctors - {{ hospital.name }}
+
+{% endblock %}
+
+
+{% block content %}
+
+<a
+    href="{{ url_for('hospital_details', hospital_id=hospital.id) }}"
+    class="back-link"
+>
+    ← Back
+</a>
+
+
+<div class="page-header">
+
+    <h1>
+        Doctors at {{ hospital.name }}
+    </h1>
+
+    <p>
+        Find and consult experienced doctors at this hospital.
+    </p>
+
+</div>
+
+
+<div class="doctor-search">
+
+    <input
+        type="text"
+        placeholder="Search doctors by name or specialty..."
+    >
+
+</div>
+
+
+<div class="doctor-list">
+
+    {% for doctor in doctors %}
+
+    <div class="doctor-card">
+
+        <div class="doctor-image">
+
+            <span>👨‍⚕️</span>
+
+        </div>
+
+
+        <div class="doctor-info">
+
+            <h2>
+                {{ doctor.name }}
+            </h2>
+
+            <p class="doctor-specialization">
+                {{ doctor.specialization }}
+            </p>
+
+            <p>
+                {{ doctor.experience }}+ Years Experience
+            </p>
+
+            <p class="doctor-rating">
+                ⭐ {{ doctor.rating }}
+                ({{ doctor.review_count }} Reviews)
+            </p>
+
+        </div>
+
+
+        <div class="doctor-action">
+
+            <a
+                href="{{ url_for('doctor_profile', doctor_id=doctor.id) }}"
+                class="view-button"
+            >
+                View Profile
+            </a>
+
+        </div>
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-doctors">
+
+        <h2>
+            No doctors found
+        </h2>
+
+        <p>
+            There are currently no doctors listed for this hospital.
+        </p>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

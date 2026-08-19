@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+{{ hospital.name }} - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+<a
+    href="/hospitals"
+    class="back-link"
+>
+    ← Back to Hospitals
+</a>
+
+
+<div class="hospital-details">
+
+    <!-- Hospital Header -->
+
+    <div class="hospital-details-header">
+
+        <div class="hospital-large-image">
+            🏥
+        </div>
+
+
+        <div class="hospital-title">
+
+            <h1>
+                {{ hospital.name }}
+            </h1>
+
+            <p class="hospital-location">
+                📍 {{ hospital.location }}
+            </p>
+
+            <p class="hospital-rating">
+                ⭐ {{ hospital.rating }}
+                ({{ hospital.review_count }} Reviews)
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Main Information -->
+
+    <div class="details-grid">
+
+
+        <!-- About -->
+
+        <section class="details-card">
+
+            <h2>
+                About Hospital
+            </h2>
+
+            <p>
+                {{ hospital.description }}
+            </p>
+
+        </section>
+
+
+        <!-- Bed Availability -->
+
+        <section class="details-card">
+
+            <h2>
+                Bed Availability
+            </h2>
+
+
+            {% for bed in hospital.beds %}
+
+<div class="bed-row">
+
+    <span>
+        {{ bed.bed_type }}
+    </span>
+
+    <strong class="available">
+        {{ bed.available_beds }}
+    </strong>
+
+</div>
+
+{% endfor %}
+
+        </section>
+
+
+        <!-- Facilities -->
+
+        <section class="details-card">
+
+            <h2>
+                Facilities
+            </h2>
+
+            <ul class="facilities-list">
+
+                <li>✓ 24x7 Emergency</li>
+
+                <li>✓ ICU</li>
+
+                <li>✓ Free Wi-Fi</li>
+
+                <li>✓ Pharmacy</li>
+
+                <li>✓ Pathology Lab</li>
+
+                <li>✓ Ambulance</li>
+
+            </ul>
+
+        </section>
+
+
+    </div>
+
+
+    <!-- Actions -->
+
+    <div class="hospital-actions">
+
+        <a
+            href="#"
+            class="primary-button"
+        >
+            Book Appointment
+        </a>
+
+
+        <a
+            href="{{ url_for('bed_availability', hospital_id=hospital.id) }}"
+            class="secondary-button"
+        >   
+            Check Bed Availability
+        </a>
+        <a
+        href="{{ url_for('doctor_list', hospital_id=hospital.id) }}"
+        class="secondary-button"
+        >
+        Check Doctors
+        </a>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+{{ doctor.name }} - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<a
+    href="{{ url_for('my_doctors') }}"
+    class="back-link"
+>
+    ← Back to My Doctors
+</a>
+
+
+<div class="doctor-detail-page">
+
+
+    <!-- Doctor Header -->
+
+    <div class="doctor-detail-header">
+
+
+        <div class="doctor-detail-avatar">
+
+            👨‍⚕️
+
+        </div>
+
+
+        <div class="doctor-detail-main">
+
+            <h1>
+                {{ doctor.name }}
+            </h1>
+
+            <p class="doctor-specialization">
+                {{ doctor.specialization }}
+            </p>
+
+            <p>
+                {{ doctor.experience }}+ Years Experience
+            </p>
+
+            <p class="doctor-rating">
+                ⭐ {{ doctor.rating }}
+                ({{ doctor.review_count }} Reviews)
+            </p>
+
+        </div>
+
+
+        <div class="doctor-detail-action">
+
+            <a
+                href="{{ url_for(
+                    'book_appointment',
+                    doctor_id=doctor.id
+                ) }}"
+                class="primary-button"
+            >
+                Book Appointment
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- Information Grid -->
+
+    <div class="doctor-information-grid">
+
+
+        <!-- About -->
+
+        <div class="doctor-information-card">
+
+            <h2>
+                About Doctor
+            </h2>
+
+            <p>
+                {{ doctor.name }} is an experienced
+                {{ doctor.specialization }}
+                with {{ doctor.experience }}+ years
+                of professional experience.
+            </p>
+
+        </div>
+
+
+
+        <!-- Qualification -->
+
+        <div class="doctor-information-card">
+
+            <h2>
+                Qualification
+            </h2>
+
+            <p>
+                {{ doctor.qualification }}
+            </p>
+
+        </div>
+
+
+
+        <!-- Hospital -->
+
+        <div class="doctor-information-card">
+
+            <h2>
+                Affiliated Hospital
+            </h2>
+
+            <p>
+                {{ doctor.hospital.name }}
+            </p>
+
+            <a
+                href="#"
+                class="text-link"
+            >
+                View Hospital
+            </a>
+
+        </div>
+
+
+
+        <!-- Consultation Fee -->
+
+        <div class="doctor-information-card">
+
+            <h2>
+                Consultation Fee
+            </h2>
+
+            <p class="doctor-fee-large">
+                ₹{{ doctor.consultation_fee }}
+            </p>
+
+        </div>
+
+
+
+        <!-- Availability -->
+
+        <div class="doctor-information-card">
+
+            <h2>
+                Available Days
+            </h2>
+
+            <p>
+                {{ doctor.available_days }}
+            </p>
+
+        </div>
+
+
+
+        <!-- Timings -->
+
+        <div class="doctor-information-card">
+
+            <h2>
+                Consultation Timings
+            </h2>
+
+            <p>
+                {{ doctor.timings }}
+            </p>
+
+        </div>
+
+
+
+        <!-- Specialization -->
+
+        <div class="doctor-information-card">
+
+            <h2>
+                Specialization
+            </h2>
+
+            <p>
+                {{ doctor.specialization }}
+            </p>
+
+        </div>
+
+
+
+        <!-- Patient History -->
+
+        <div class="doctor-information-card">
+
+            <h2>
+                Your Appointments
+            </h2>
+
+            <p>
+                You have previously booked
+                appointments with this doctor.
+            </p>
+
+            <a
+                href="{{ url_for('my_appointments') }}"
+                class="text-link"
+            >
+                View Appointment History
+            </a>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

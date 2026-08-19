@@ -1,0 +1,6 @@
+{% extends "receptionist/base.html" %}
+{% block title %}Appointments | HealthForge AI{% endblock %}
+{% block content %}<header class="rec-header"><div><p class="eyebrow">Front Desk</p><h1>Appointments</h1></div></header>
+<section class="panel"><table><thead><tr><th>Time</th><th>Patient</th><th>Doctor</th><th>Status</th></tr></thead><tbody>
+{% for a in appointments %}<tr><td>{{ a.time }}</td><td>{{ a.patient }}</td><td>{{ a.doctor }}</td><td><span class="pill">{{ a.status }}</span></td></tr>{% endfor %}
+</tbody></table></section>{% endblock %}

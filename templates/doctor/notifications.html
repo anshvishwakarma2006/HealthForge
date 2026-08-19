@@ -1,0 +1,43 @@
+{% extends "doctor/base.html" %}
+{% block title %}Notifications | HealthForge AI{% endblock %}
+{% block breadcrumb %}Notifications{% endblock %}
+
+{% block content %}
+<div class="page-header compact">
+    <div>
+        <p class="eyebrow">Updates</p>
+        <h1>Notifications</h1>
+        <p>Stay updated about appointments and portal activity.</p>
+    </div>
+    <form method="POST" action="{{ url_for('doctor_mark_all_notifications_read') }}">
+        <button class="secondary-button" type="submit">Mark all as read</button>
+    </form>
+</div>
+
+<section class="panel notification-panel">
+    {% for notification in notifications %}
+    <div class="notification-item {% if not notification.read %}unread{% endif %}">
+        <div class="notification-icon {{ notification.type }}">
+            {% if notification.type == "appointment" %}▣{% elif notification.type == "reminder" %}◷{% else %}✓{% endif %}
+        </div>
+        <div class="notification-body">
+            <div class="notification-title-row">
+                <h3>{{ notification.title }}</h3>
+                {% if not notification.read %}<span class="unread-dot"></span>{% endif %}
+            </div>
+            <p>{{ notification.message }}</p>
+            <small>{{ notification.time }}</small>
+        </div>
+        {% if not notification.read %}
+        <form method="POST" action="{{ url_for('doctor_mark_notification_read', notification_id=notification.id) }}">
+            <button class="link-button" type="submit">Mark read</button>
+        </form>
+        {% else %}
+        <span class="read-label">Read</span>
+        {% endif %}
+    </div>
+    {% else %}
+    <div class="empty-state">No notifications.</div>
+    {% endfor %}
+</section>
+{% endblock %}

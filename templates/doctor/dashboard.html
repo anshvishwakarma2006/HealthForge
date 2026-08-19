@@ -1,0 +1,139 @@
+{% extends "doctor/base.html" %}
+{% block title %}Dashboard | HealthForge AI{% endblock %}
+{% block breadcrumb %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Overview</p>
+        <h1>Welcome back, {{ doctor.name }} 👋</h1>
+    </div>
+    <div class="header-date">📅 15 May 2025</div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon blue">▣</div>
+        <div><span>Today's Appointments</span><strong>{{ "%02d"|format(stats.today) }}</strong></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon green">✓</div>
+        <div><span>Patients Seen Today</span><strong>{{ "%02d"|format(stats.seen) }}</strong></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon purple">♙</div>
+        <div><span>New Patients</span><strong>{{ "%02d"|format(stats.new_patients) }}</strong></div>
+    </div>
+    <div class="stat-card">
+        <div class="stat-icon orange">◷</div>
+        <div><span>Pending Appointments</span><strong>{{ "%02d"|format(stats.pending) }}</strong></div>
+    </div>
+</div>
+
+<div class="dashboard-grid">
+    <section class="panel schedule-preview">
+        <div class="panel-header">
+            <div>
+                <h2>Today's Schedule</h2>
+                <p>Thursday, 15 May 2025 · Click an appointment to edit its status</p>
+            </div>
+            <a class="text-link" href="{{ url_for('doctor_schedule_page') }}">View Full Schedule →</a>
+        </div>
+
+        <div class="timeline">
+            {% for appointment in appointments %}
+            <button
+                type="button"
+                class="timeline-row timeline-row-button"
+                data-appointment-id="{{ appointment.id }}"
+                data-time="{{ appointment.time }}"
+                data-patient="{{ appointment.patient }}"
+                data-type="{{ appointment.type }}"
+                data-token="{{ appointment.token }}"
+                data-status="{{ appointment.status }}"
+                onclick="openAppointmentEditor(this)"
+                aria-label="Edit {{ appointment.patient }} appointment">
+                <span class="timeline-time">{{ appointment.time }}</span>
+                <span class="timeline-dot"></span>
+                <span class="timeline-details">
+                    <strong>{{ appointment.patient }}</strong>
+                    <span>{{ appointment.type }} · {{ appointment.token }}</span>
+                </span>
+                <span class="status-pill {{ appointment.status|lower|replace(' ', '-') }}">{{ appointment.status }}</span>
+            </button>
+            {% endfor %}
+        </div>
+    </section>
+
+    <section class="panel quick-actions">
+        <div class="panel-header">
+            <div>
+                <h2>Quick Actions</h2>
+                <p>Frequently used actions</p>
+            </div>
+        </div>
+        <a href="{{ url_for('doctor_appointment_list') }}" class="quick-action">
+            <span class="quick-action-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16M8 13h3M8 16h6"/></svg></span><div><strong>View Appointments</strong><small>See today's patient queue</small></div><b>→</b>
+        </a>
+        <a href="{{ url_for('doctor_patient_list') }}" class="quick-action">
+            <span class="quick-action-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3"/><path d="M3.5 20a5.5 5.5 0 0 1 11 0M15 6.5a2.5 2.5 0 1 1 0 5M16 14a4.5 4.5 0 0 1 4.5 4.5"/></svg></span><div><strong>View Patients</strong><small>Search your patient list</small></div><b>→</b>
+        </a>
+        <a href="{{ url_for('doctor_schedule_page') }}" class="quick-action">
+            <span class="quick-action-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><path d="M12 7v5l3.5 2"/></svg></span><div><strong>Manage Schedule</strong><small>Update your availability</small></div><b>→</b>
+        </a>
+        <a href="{{ url_for('doctor_portal_profile') }}" class="quick-action">
+            <span class="quick-action-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span><div><strong>Update Profile</strong><small>Edit your information</small></div><b>→</b>
+        </a>
+    </section>
+</div>
+
+<div class="modal-backdrop" id="appointmentEditor">
+    <div class="modal appointment-editor-modal">
+        <button class="modal-close" type="button" onclick="closeAppointmentEditor()">×</button>
+        <div class="modal-icon appointment-modal-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M4 9h16"/></svg></div>
+        <p class="eyebrow">Today's Appointment</p>
+        <h2 id="editorPatient">Appointment</h2>
+        <div class="modal-details appointment-modal-details">
+            <div><span>Time</span><strong id="editorTime">-</strong></div>
+            <div><span>Type</span><strong id="editorType">-</strong></div>
+            <div><span>Token</span><strong id="editorToken">-</strong></div>
+            <div><span>Status</span><strong id="editorCurrentStatus">-</strong></div>
+        </div>
+        <form method="POST" id="appointmentEditorForm" class="editor-form">
+            <label for="editorStatus">Update Status</label>
+            <select id="editorStatus" name="status">
+                <option>Scheduled</option>
+                <option>Waiting</option>
+                <option>Checked in</option>
+                <option>Completed</option>
+                <option>Cancelled</option>
+            </select>
+            <button class="primary-button full-width" type="submit">Save Appointment</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function openAppointmentEditor(button) {
+    const editor = document.getElementById("appointmentEditor");
+    document.getElementById("editorPatient").textContent = button.dataset.patient;
+    document.getElementById("editorTime").textContent = button.dataset.time;
+    document.getElementById("editorType").textContent = button.dataset.type;
+    document.getElementById("editorToken").textContent = button.dataset.token;
+    document.getElementById("editorCurrentStatus").textContent = button.dataset.status;
+    document.getElementById("editorStatus").value = button.dataset.status;
+    document.getElementById("appointmentEditorForm").action = `/appointments/${button.dataset.appointmentId}/status`;
+    editor.classList.add("show");
+}
+function closeAppointmentEditor() {
+    document.getElementById("appointmentEditor")?.classList.remove("show");
+}
+document.getElementById("appointmentEditor")?.addEventListener("click", function(e) {
+    if (e.target === this) closeAppointmentEditor();
+});
+document.addEventListener("keydown", function(e) {
+    if (e.key === "Escape") closeAppointmentEditor();
+});
+</script>
+{% endblock %}

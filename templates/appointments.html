@@ -1,0 +1,267 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+My Appointments - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="page-header">
+
+    <h1>
+        My Appointments
+    </h1>
+
+    <p>
+        Manage your upcoming and previous appointments.
+    </p>
+
+</div>
+
+
+<div class="appointments-card">
+
+
+    <!-- =================================
+         UPCOMING APPOINTMENTS
+         ================================= -->
+
+    <h2 class="appointment-section-title">
+        Upcoming Appointments
+    </h2>
+
+
+    <div class="appointment-list">
+
+        {% for appointment in upcoming %}
+
+        <div class="appointment-item">
+
+
+            <!-- Date -->
+
+            <div class="appointment-date">
+
+                <strong>
+                    {{ appointment.appointment_date.strftime("%d") }}
+                </strong>
+
+                <span>
+                    {{ appointment.appointment_date.strftime("%b") }}
+                </span>
+
+            </div>
+            <form
+                method="POST"
+                action="{{ url_for(
+                    'cancel_appointment',
+                    appointment_id=appointment.id
+            ) }}"
+            >
+
+            
+
+            </form>
+
+
+            <!-- Doctor Information -->
+
+            <div class="appointment-info">
+
+                <h2>
+                    {{ appointment.doctor.name }}
+                </h2>
+
+                <p>
+                    {{ appointment.doctor.specialization }}
+                </p>
+
+                <p>
+                    {{ appointment.hospital.name }}
+                </p>
+
+                <p>
+                    {{ appointment.consultation_type }}
+                </p>
+
+            </div>
+
+
+            <!-- Time + Status -->
+
+            <div class="appointment-time">
+
+                <strong>
+                    {{ appointment.appointment_time }}
+                </strong>
+
+
+                <span class="appointment-status confirmed">
+                    {{ appointment.status }}
+                </span>
+
+
+                <!-- Cancel Appointment -->
+
+                <form
+                    method="POST"
+                    action="{{ url_for(
+                        'cancel_appointment',
+                        appointment_id=appointment.id
+                    ) }}"
+                >
+
+                    <button
+                        type="submit"
+                        class="cancel-button"
+                    >
+                        Cancel
+                    </button>
+
+                </form>
+
+            </div>
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- No Upcoming Appointments -->
+
+        <div class="no-appointments">
+
+            <h2>
+                No Upcoming Appointments
+            </h2>
+
+            <p>
+                You don't have any upcoming appointments.
+            </p>
+
+            <a
+                href="/hospitals"
+                class="primary-button"
+            >
+                Find a Doctor
+            </a>
+
+        </div>
+
+
+        {% endfor %}
+
+    </div>
+
+
+
+    <!-- =================================
+         PAST APPOINTMENTS
+         ================================= -->
+
+    <h2 class="appointment-section-title">
+
+        Past Appointments
+
+    </h2>
+
+
+    <div class="appointment-list">
+
+
+        {% for appointment in past %}
+
+
+        <div class="appointment-item">
+
+
+            <!-- Date -->
+
+            <div class="appointment-date">
+
+                <strong>
+                    {{ appointment.appointment_date.strftime("%d") }}
+                </strong>
+
+                <span>
+                    {{ appointment.appointment_date.strftime("%b") }}
+                </span>
+
+            </div>
+
+
+            <!-- Doctor Information -->
+
+            <div class="appointment-info">
+
+                <h2>
+                    {{ appointment.doctor.name }}
+                </h2>
+
+                <p>
+                    {{ appointment.doctor.specialization }}
+                </p>
+
+                <p>
+                    {{ appointment.hospital.name }}
+                </p>
+
+                <p>
+                    {{ appointment.consultation_type }}
+                </p>
+
+            </div>
+
+
+            <!-- Time + Status -->
+
+            <div class="appointment-time">
+
+                <strong>
+                    {{ appointment.appointment_time }}
+                </strong>
+
+
+                <span class="appointment-status">
+
+                    {{ appointment.status }}
+
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- No Past Appointments -->
+
+        <div class="no-appointments">
+
+            <p>
+                No past appointments.
+            </p>
+
+        </div>
+
+
+        {% endfor %}
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+
+{% block title %}
+
+Search Hospital - HealthForge AI
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="page-header">
+
+    <h1>
+        Search Hospital
+    </h1>
+
+    <p>
+        Find hospitals and healthcare facilities near you.
+    </p>
+
+</div>
+
+
+<div class="search-box">
+
+    <input
+        type="text"
+        placeholder="Search by hospital name or location..."
+    >
+
+    <select>
+
+        <option>
+            All Locations
+        </option>
+
+        <option>
+            Lucknow
+        </option>
+
+    </select>
+
+
+    <select>
+
+        <option>
+            All Specialities
+        </option>
+
+        <option>
+            Cardiology
+        </option>
+
+        <option>
+            Neurology
+        </option>
+
+        <option>
+            Orthopedics
+        </option>
+
+    </select>
+
+
+    <button>
+        Search
+    </button>
+
+</div>
+
+
+<div class="hospital-list">
+
+    {% for hospital in hospitals %}
+
+    <div class="hospital-card">
+
+        <div class="hospital-image">
+
+            <div class="hospital-placeholder">
+                🏥
+            </div>
+
+        </div>
+
+
+        <div class="hospital-info">
+
+            <h2>
+                {{ hospital.name }}
+            </h2>
+
+            <p class="location">
+                📍 {{ hospital.location }}
+            </p>
+
+            <p>
+                ⭐ {{ hospital.rating }}
+                ({{ hospital.review_count }} Reviews)
+            </p>
+
+            <span class="speciality">
+                Multi Speciality
+            </span>
+
+        </div>
+
+
+        <div class="hospital-action">
+
+            <div class="beds">
+                Beds Available
+            </div>
+
+            <a
+                href="{{ url_for('hospital_details', hospital_id=hospital.id) }}"
+                class="view-button"
+            >
+                View Details
+            </a>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

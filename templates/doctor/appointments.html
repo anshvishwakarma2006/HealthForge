@@ -1,0 +1,69 @@
+{% extends "doctor/base.html" %}
+{% block title %}Appointments | HealthForge AI{% endblock %}
+{% block breadcrumb %}Appointments{% endblock %}
+
+{% block content %}
+<div class="page-header compact">
+    <div>
+        <p class="eyebrow">Appointments</p>
+        <h1>Today's Appointments</h1>
+        <p>Manage today's patient queue and appointment status.</p>
+    </div>
+    <div class="date-control">📅 15 May 2025</div>
+</div>
+
+<div class="filter-tabs">
+    {% for option in ["All", "Scheduled", "Waiting", "Checked in", "Completed", "Cancelled"] %}
+    <a class="{% if current_status == option %}active{% endif %}" href="{{ url_for('doctor_appointment_list', status=option) }}">{{ option }}</a>
+    {% endfor %}
+</div>
+
+<section class="panel table-panel">
+    <div class="panel-header">
+        <div>
+            <h2>Appointment Queue</h2>
+            <p>{{ appointments|length }} appointment(s) in this view</p>
+        </div>
+        <button class="secondary-button" onclick="window.print()">🖨 Print</button>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Patient Name</th>
+                    <th>Age / Gender</th>
+                    <th>Type</th>
+                    <th>Token No.</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for appointment in appointments %}
+                <tr>
+                    <td><strong>{{ appointment.time }}</strong></td>
+                    <td><div class="patient-cell"><span class="table-avatar">{{ appointment.patient[0] }}</span>{{ appointment.patient }}</div></td>
+                    <td>{{ appointment.age }} / {{ appointment.gender }}</td>
+                    <td>{{ appointment.type }}</td>
+                    <td><code>{{ appointment.token }}</code></td>
+                    <td><span class="status-pill {{ appointment.status|lower|replace(' ', '-') }}">{{ appointment.status }}</span></td>
+                    <td>
+                        <form method="POST" action="{{ url_for('doctor_update_appointment_status', appointment_id=appointment.id) }}" class="inline-form">
+                            <select name="status" onchange="this.form.submit()">
+                                {% for status in ["Scheduled", "Waiting", "Checked in", "Completed", "Cancelled"] %}
+                                <option value="{{ status }}" {% if appointment.status == status %}selected{% endif %}>{{ status }}</option>
+                                {% endfor %}
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr><td colspan="7" class="empty-state">No appointments found for this filter.</td></tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
+{% endblock %}
